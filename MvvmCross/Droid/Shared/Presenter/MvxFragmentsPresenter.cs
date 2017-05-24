@@ -21,8 +21,8 @@ namespace MvvmCross.Droid.Shared.Presenter
     {
         public const string ViewModelRequestBundleKey = "__mvxViewModelRequest";
 
-        private readonly FragmentHostRegistrationSettings _fragmentHostRegistrationSettings;
-        private readonly Lazy<IMvxNavigationSerializer> _lazyNavigationSerializerFactory;
+        protected FragmentHostRegistrationSettings _fragmentHostRegistrationSettings;
+        protected Lazy<IMvxNavigationSerializer> _lazyNavigationSerializerFactory;
 
         protected IMvxNavigationSerializer Serializer => _lazyNavigationSerializerFactory.Value;
 
@@ -66,6 +66,11 @@ namespace MvvmCross.Droid.Shared.Presenter
             var bundle = new Bundle();
             var serializedRequest = Serializer.Serializer.SerializeObject(request);
             bundle.PutString(ViewModelRequestBundleKey, serializedRequest);
+
+            if (request is MvxViewModelInstanceRequest)
+            {
+                Mvx.Resolve<IMvxChildViewModelCache>().Cache(((MvxViewModelInstanceRequest)request).ViewModelInstance);
+            }
 
             if (!_fragmentHostRegistrationSettings.IsActualHostValid(request.ViewModelType))
             {

@@ -1,4 +1,4 @@
-// MvxTabsFragmentActivity.cs
+﻿// MvxTabsFragmentActivity.cs
 // (c) Copyright Cirrious Ltd. http://www.cirrious.com
 // MvvmCross is licensed using Microsoft Public License (Ms-PL)
 // Contributions and inspirations noted in readme.md and license.txt
@@ -82,12 +82,37 @@ namespace MvvmCross.Droid.FullFragging
             base.OnCreate(savedInstanceState);
 
             SetContentView(_layoutId);
+
+            var rootView = Window.DecorView.RootView;
+
+            EventHandler onGlobalLayout = null;
+            onGlobalLayout = (sender, args) =>
+            {
+                rootView.ViewTreeObserver.GlobalLayout -= onGlobalLayout;
+                ViewModel?.Appeared();
+            };
+
+            rootView.ViewTreeObserver.GlobalLayout += onGlobalLayout;
+
             InitializeTabHost(savedInstanceState);
 
             if (savedInstanceState != null)
             {
                 _tabHost.SetCurrentTabByTag(savedInstanceState.GetString(SavedTabIndexStateKey));
             }
+        }
+
+        public override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
+            ViewModel?.Appearing();
+        }
+
+        public override void OnDetachedFromWindow()
+        {
+            base.OnDetachedFromWindow();
+            ViewModel?.Disappearing(); // we don't have anywhere to get this info
+            ViewModel?.Disappeared();
         }
 
         protected override void OnSaveInstanceState(Bundle outState)
@@ -195,10 +220,7 @@ namespace MvvmCross.Droid.FullFragging
 
         protected virtual string FragmentJavaName(Type fragmentType)
         {
-            var namespaceText = fragmentType.Namespace ?? "";
-            if (namespaceText.Length > 0)
-                namespaceText = namespaceText.ToLowerInvariant() + ".";
-            return namespaceText + fragmentType.Name;
+            return Java.Lang.Class.FromType(fragmentType).Name;
         }
 
         public virtual void OnTabFragmentChanging(string tag, FragmentTransaction transaction)

@@ -1,5 +1,5 @@
-using System;
-using Android.App;
+﻿using System;
+using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -7,6 +7,7 @@ using Android.Preferences;
 using MvvmCross.Platform.Core;
 using MvvmCross.Droid.Shared;
 using MvvmCross.Droid.Shared.Fragments.EventSource;
+using Android.App;
 
 namespace MvvmCross.Droid.FullFragging.Fragments.EventSource
 {
@@ -14,7 +15,7 @@ namespace MvvmCross.Droid.FullFragging.Fragments.EventSource
     public abstract class MvxEventSourcePreferenceFragment : PreferenceFragment
     , IMvxEventSourceFragment
     {
-        public event EventHandler<MvxValueEventArgs<Activity>> AttachCalled;
+        public event EventHandler<MvxValueEventArgs<Context>> AttachCalled;
         public event EventHandler<MvxValueEventArgs<Bundle>> CreateWillBeCalled;
         public event EventHandler<MvxValueEventArgs<Bundle>> CreateCalled;
         public event EventHandler<MvxValueEventArgs<MvxCreateViewParameters>> CreateViewCalled;
@@ -40,10 +41,28 @@ namespace MvvmCross.Droid.FullFragging.Fragments.EventSource
 
         }
 
+		public override void OnAttach(Context context)
+		{
+			if (Build.VERSION.SdkInt >= BuildVersionCodes.M)
+			{
+				AttachCalled.Raise(this, context);
+			}
+
+			base.OnAttach(context);
+		}
+
+#pragma warning disable CS0672 // Member overrides obsolete member
         public override void OnAttach(Activity activity)
+#pragma warning restore CS0672 // Member overrides obsolete member
         {
-            AttachCalled.Raise(this, activity);
+			if (Build.VERSION.SdkInt < BuildVersionCodes.M)
+			{
+				AttachCalled.Raise(this, activity);
+			}
+
+#pragma warning disable CS0618 // Type or member is obsolete
             base.OnAttach(activity);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         public override void OnCreate(Bundle savedInstanceState)

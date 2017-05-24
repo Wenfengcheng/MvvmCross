@@ -1,4 +1,4 @@
-// MvxCachingFragmentActivity.cs
+﻿// MvxCachingFragmentActivity.cs
 // (c) Copyright Cirrious Ltd. http://www.cirrious.com
 // MvvmCross is licensed using Microsoft Public License (Ms-PL)
 // Contributions and inspirations noted in readme.md and license.txt
@@ -11,11 +11,9 @@ using System.Linq;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
-using MvvmCross.Binding.Droid.BindingContext;
 using MvvmCross.Core.ViewModels;
 using MvvmCross.Core.Views;
 using MvvmCross.Droid.Shared.Attributes;
-using MvvmCross.Droid.FullFragging.Fragments;
 using MvvmCross.Droid.Platform;
 using MvvmCross.Droid.Views;
 using MvvmCross.Platform;
@@ -345,7 +343,18 @@ namespace MvvmCross.Droid.FullFragging.Caching
 		{
 			base.OnCreate (bundle);
 
-			if (bundle == null) {
+            var rootView = Window.DecorView.RootView;
+
+            EventHandler onGlobalLayout = null;
+            onGlobalLayout = (sender, args) =>
+            {
+                rootView.ViewTreeObserver.GlobalLayout -= onGlobalLayout;
+                ViewModel.Appeared();
+            };
+
+            rootView.ViewTreeObserver.GlobalLayout += onGlobalLayout;
+
+            if (bundle == null) {
 				var fragmentRequestText = Intent.Extras?.GetString (ViewModelRequestBundleKey);
 				if (fragmentRequestText == null)
 					return;
@@ -373,11 +382,8 @@ namespace MvvmCross.Droid.FullFragging.Caching
 
 		protected virtual string FragmentJavaName(Type fragmentType)
 		{
-			var namespaceText = fragmentType.Namespace ?? "";
-			if (namespaceText.Length > 0)
-				namespaceText = namespaceText.ToLowerInvariant() + ".";
-			return namespaceText + fragmentType.Name;
-		}
+            return Java.Lang.Class.FromType(fragmentType).Name;
+        }
 
 		public virtual void OnBeforeFragmentChanging(IMvxCachedFragmentInfo fragmentInfo, FragmentTransaction transaction)
 		{
@@ -450,7 +456,20 @@ namespace MvvmCross.Droid.FullFragging.Caching
 			CloseFragment(frag.Tag, frag.ContentId);
 			return true;
 		}
-	}
+
+        public override void OnAttachedToWindow()
+        {
+            base.OnAttachedToWindow();
+            ViewModel?.Appearing();
+        }
+
+        public override void OnDetachedFromWindow()
+        {
+            base.OnDetachedFromWindow();
+            ViewModel?.Disappearing(); // we don't have anywhere to get this info
+            ViewModel?.Disappeared();
+        }
+    }
 
     public abstract class MvxCachingFragmentActivity<TViewModel>
         : MvxCachingFragmentActivity

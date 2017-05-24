@@ -11,11 +11,11 @@
     <AssemblyName>MvvmCross.Droid</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidSupportedAbis>armeabi</AndroidSupportedAbis>
     <MandroidI18n />
-    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
     <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
     <AndroidStoreUncompressedFileExtensions />
+    <AndroidTlsProvider></AndroidTlsProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>

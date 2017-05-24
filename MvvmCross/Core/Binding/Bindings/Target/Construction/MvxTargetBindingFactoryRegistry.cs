@@ -16,8 +16,8 @@ namespace MvvmCross.Binding.Bindings.Target.Construction
 
     public class MvxTargetBindingFactoryRegistry : IMvxTargetBindingFactoryRegistry
     {
-        private readonly Dictionary<string, IMvxPluginTargetBindingFactory> _lookups =
-            new Dictionary<string, IMvxPluginTargetBindingFactory>();
+        private readonly Dictionary<int, IMvxPluginTargetBindingFactory> _lookups =
+            new Dictionary<int, IMvxPluginTargetBindingFactory>();
 
         public virtual IMvxTargetBinding CreateBinding(object target, string targetName)
         {
@@ -103,9 +103,9 @@ namespace MvvmCross.Binding.Bindings.Target.Construction
             }
         }
 
-        private static string GenerateKey(Type type, string name)
+        private static int GenerateKey(Type type, string name)
         {
-            return $"{type.FullName}:{name}";
+			return type.GetHashCode () * 9 ^ name.GetHashCode ();
         }
 
         private IMvxPluginTargetBindingFactory FindSpecificFactory(Type type, string name)
@@ -118,7 +118,14 @@ namespace MvvmCross.Binding.Bindings.Target.Construction
             }
             var baseType = type.GetTypeInfo().BaseType;
             if (baseType != null)
-                return this.FindSpecificFactory(baseType, name);
+                factory = this.FindSpecificFactory(baseType, name);
+            if (factory != null) return factory;
+            var implementedInterfaces = type.GetTypeInfo().ImplementedInterfaces;
+            foreach (var implementedInterface in implementedInterfaces)
+            {
+                factory = this.FindSpecificFactory(implementedInterface, name);
+                if (factory != null) return factory;
+            }
             return null;
         }
     }

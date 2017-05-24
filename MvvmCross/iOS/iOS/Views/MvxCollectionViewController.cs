@@ -1,4 +1,4 @@
-// MvxCollectionViewController.cs
+﻿// MvxCollectionViewController.cs
 
 // MvvmCross is licensed using Microsoft Public License (Ms-PL)
 // Contributions and inspirations noted in readme.md and license.txt
@@ -54,6 +54,43 @@ namespace MvvmCross.iOS.Views
         public MvxViewModelRequest Request { get; set; }
 
         public IMvxBindingContext BindingContext { get; set; }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            ViewModel?.Appearing();
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            ViewModel?.Appeared();
+        }
+
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+            ViewModel?.Disappearing();
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+            ViewModel?.Disappeared();
+        }
+
+        public override void DidMoveToParentViewController(UIViewController parent)
+        {
+            base.DidMoveToParentViewController(parent);
+            if (parent == null)
+                ViewModel?.Destroy();
+        }
+
+        public override void PrepareForSegue(UIStoryboardSegue segue, NSObject sender)
+        {
+            base.PrepareForSegue(segue, sender);
+            this.ViewModelRequestForSegue(segue, sender);
+        }
     }
 
     public class MvxCollectionViewController<TViewModel>
@@ -76,6 +113,6 @@ namespace MvvmCross.iOS.Views
         {
             get { return (TViewModel)base.ViewModel; }
             set { base.ViewModel = value; }
-        }
+        }   
     }
 }

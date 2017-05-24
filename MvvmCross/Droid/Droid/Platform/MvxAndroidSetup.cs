@@ -14,6 +14,7 @@ namespace MvvmCross.Droid.Platform
     using Android.Content;
     using Android.Views;
 
+    using MvvmCross.Binding;
     using MvvmCross.Binding.Binders;
     using MvvmCross.Binding.BindingContext;
     using MvvmCross.Binding.Bindings.Target.Construction;
@@ -123,6 +124,7 @@ namespace MvvmCross.Droid.Platform
         protected override IMvxViewDispatcher CreateViewDispatcher()
         {
             var presenter = this.CreateViewPresenter();
+            Mvx.RegisterSingleton(presenter);
             return new MvxAndroidViewDispatcher(presenter);
         }
 
@@ -157,7 +159,7 @@ namespace MvvmCross.Droid.Platform
             Mvx.CallbackWhenRegistered<IMvxNamespaceListViewTypeResolver>(FillNamespaceListViewTypeResolver);
         }
 
-        protected virtual MvxAndroidBindingBuilder CreateBindingBuilder()
+        protected virtual MvxBindingBuilder CreateBindingBuilder()
         {
             var bindingBuilder = new MvxAndroidBindingBuilder();
             return bindingBuilder;
