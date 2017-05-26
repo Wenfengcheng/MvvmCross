@@ -11,7 +11,13 @@ namespace NativeToXF.Pages
 
             // see https://forums.xamarin.com/discussion/45111/has-anybody-managed-to-get-a-toolbar-working-on-winrt-windows-using-xf
             if (Device.RuntimePlatform == Device.Windows || Device.RuntimePlatform == Device.WinPhone)
+            {
                 Padding = new Xamarin.Forms.Thickness(Padding.Left, this.Padding.Top, this.Padding.Right, 95);
+            }
+            else if (Device.RuntimePlatform == Device.iOS)
+            {
+                Padding = new Thickness(Padding.Left, 80, Padding.Right, Padding.Bottom);
+            }
 
             ForceLayout();
 
