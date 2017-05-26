@@ -103,7 +103,12 @@ namespace MvvmCross.Core.ViewModels
 
         public void SetClose(TaskCompletionSource<TResult> tcs)
         {
-            _tcs = tcs ?? throw new ArgumentNullException(nameof(tcs));
+            if (tcs == null)
+            {
+                throw new ArgumentNullException(nameof(tcs));
+            }
+            
+            _tcs = tcs;
         }
 
         public virtual Task<bool> Close(TResult result)
