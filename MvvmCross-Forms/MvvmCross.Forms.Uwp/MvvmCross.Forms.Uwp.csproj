@@ -42,6 +42,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Presenters\MvxFormsHybridUwpPagePresenter.cs" />
     <Compile Include="Presenters\MvxFormsUwpMasterDetailPagePresenter.cs" />
     <Compile Include="Presenters\MvxFormsUwpPagePresenter.cs" />
     <Compile Include="MvxPageRenderer.cs" />

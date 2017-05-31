@@ -13,8 +13,23 @@ namespace NativeToXF.ViewModels
         public string YourNickname
 		{ 
 			get { return _yourNickname; }
-			set { _yourNickname = value; RaisePropertyChanged(() => YourNickname); RaisePropertyChanged(() => Hello); }
+			set
+            {
+                _yourNickname = value;
+                RaisePropertyChanged(() => YourNickname);
+                RaisePropertyChanged(() => Hello);
+            }
 		}
+
+        private double _donationAmount = 0;
+        public double Donation
+        {
+            get { return _donationAmount; }
+            set
+            {
+                SetProperty(ref this._donationAmount, value);
+            }
+        }
 
         public string Hello
         {
@@ -37,6 +52,17 @@ namespace NativeToXF.ViewModels
                 return new MvxCommand(() =>
                 {
                     this.ShowViewModel<ConfirmationViewModel>(new Dictionary<string, string>(){ { "nickName", this.YourNickname} }, null);
+                });
+            }
+        }
+
+        public ICommand CancelCommand
+        {
+            get
+            {
+                return new MvxCommand(() =>
+                {
+                    this.Close(this);
                 });
             }
         }

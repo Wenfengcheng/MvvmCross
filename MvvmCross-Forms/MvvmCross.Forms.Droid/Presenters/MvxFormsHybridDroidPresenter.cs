@@ -16,6 +16,7 @@ using MvvmCross.Core.ViewModels;
 using MvvmCross.Forms.Presenters;
 using MvvmCross.Platform;
 using MvvmCross.Forms.Attributes;
+using MvvmCross.Core.Views;
 
 namespace MvvmCross.Forms.Droid.Presenters
 {
@@ -38,6 +39,44 @@ namespace MvvmCross.Forms.Droid.Presenters
                 }
 
                 this.mvxFormsApp = value;
+            }
+        }
+
+        public override void ChangePresentation(MvxPresentationHint hint)
+        {
+            if (HandlePresentationChange(hint))
+            {
+                return;
+            }
+
+            Activity activity = this.Activity;
+
+            if (activity is MvxFormsApplicationActivity)
+            {
+
+                if (hint is MvxClosePresentationHint)
+                {
+                    var mainPage = MvxFormsApp.MainPage as NavigationPage;
+
+                    if (mainPage.Navigation.NavigationStack.Count == 1)
+                    {
+                        // Clear the MainPage
+                        ////MvxFormsApp.MainPage.Navigation.RemovePage(MvxFormsApp.MainPage.Navigation.NavigationStack[0]);
+                        // "System.InvalidOperationException: Cannot remove root page when it is also the currently displayed page."
+
+                        IMvxView mvxView = activity as IMvxView;
+                        activity.Finish();
+                    }
+                    else
+                    {
+                        var page = mainPage.PopAsync();
+                        System.Diagnostics.Debug.WriteLine(page);
+                    }
+                }
+            }
+            else
+            {
+                base.ChangePresentation(hint);
             }
         }
 

@@ -16,7 +16,22 @@ namespace NativeToXF.ViewModels
             {
                 return new MvxCommand(() =>
                 {
-                    this.ShowViewModel(typeof(HelloViewModel));
+                    this.InvokeOnMainThread(() =>
+                    {
+                        this.ShowViewModel(typeof(HelloViewModel));
+                    });
+                    
+                });
+            }
+        }
+
+        public MvxCommand GoToSecondCommand
+        {
+            get
+            {
+                return new MvxCommand(() =>
+                {
+                    this.ShowViewModel(typeof(SecondViewModel));
                 });
             }
         }

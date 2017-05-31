@@ -24,13 +24,21 @@ namespace NativeToXF.Pages
 
             Title = " Hello Page";
 
-            var entryBox = new Entry
+            var nickNameEntryBox = new Entry
             {
                 Placeholder = "Who are you?",
-                TextColor = Color.Aqua,
+                TextColor = Color.Black,
                 WidthRequest = 30
             };
 
+            var donationEntryBox = new Entry
+            {
+                Placeholder = "Donation (£)?",
+                TextColor = Color.Green,
+                WidthRequest = 30,
+                ////Keyboard = Keyboard.Numeric
+            };
+            
             var helloResponse = new Label
             {
                 Text = string.Empty,
@@ -40,6 +48,12 @@ namespace NativeToXF.Pages
             var saveNickNameButton = new Button
             {
                 Text = "Save",
+                FontSize = 24
+            };
+
+            var cancelButton = new Button
+            {
+                Text = "Cancel",
                 FontSize = 24
             };
 
@@ -79,15 +93,19 @@ namespace NativeToXF.Pages
                         Text = "Enter your nickname in the box below",
                         FontSize = 24
                     },
-                    entryBox,
+                    nickNameEntryBox,
                     helloResponse,
-                    saveNickNameButton
+                    donationEntryBox,
+                    saveNickNameButton,
+                    cancelButton
                 }
             };
 
-            entryBox.SetBinding(Entry.TextProperty, new Binding("YourNickname"));
+            nickNameEntryBox.SetBinding(Entry.TextProperty, new Binding("YourNickname"));
+            donationEntryBox.SetBinding(Entry.TextProperty, new Binding("Donation"));
             helloResponse.SetBinding(Label.TextProperty, new Binding("Hello"));
             saveNickNameButton.SetBinding(Button.CommandProperty, new Binding("SaveNickNameCommand"));
+            cancelButton.SetBinding(Button.CommandProperty, new Binding("CancelCommand"));
         }
 
         protected override void OnBindingContextChanged()
