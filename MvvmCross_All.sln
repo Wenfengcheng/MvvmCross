@@ -437,7 +437,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeToXF", "TestProjects\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeToXF.Android", "TestProjects\Forms\NativeToXF\NativeToXF.Android\NativeToXF.Android.csproj", "{73C38466-F664-4816-8340-E16BA3286CEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeToXF.iOS", "NativeToXF.iOS\NativeToXF.iOS.csproj", "{2EC5E423-FF56-42C5-92BA-2828B11C9360}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeToXF.iOS", "TestProjects\Forms\NativeToXF\NativeToXF.iOS\NativeToXF.iOS.csproj", "{2EC5E423-FF56-42C5-92BA-2828B11C9360}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeToXF.UWP", "TestProjects\Forms\NativeToXF\NativeToXF.UWP\NativeToXF.UWP.csproj", "{53E497BA-32AF-4554-8125-E64FF3128463}"
 EndProject
