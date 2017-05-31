@@ -17,7 +17,7 @@ namespace NativeToXF.Pages
             }
             else if (Device.RuntimePlatform == Device.iOS)
             {
-                Padding = new Thickness(Padding.Left, 40, Padding.Right, Padding.Bottom);
+                Padding = new Thickness(Padding.Left, 60, Padding.Right, Padding.Bottom);
             }
 
             ForceLayout();
@@ -36,7 +36,6 @@ namespace NativeToXF.Pages
                 Placeholder = "Donation (£)?",
                 TextColor = Color.Green,
                 WidthRequest = 30,
-                ////Keyboard = Keyboard.Numeric
             };
             
             var helloResponse = new Label
@@ -62,7 +61,7 @@ namespace NativeToXF.Pages
                                     HorizontalOptions = LayoutOptions.CenterAndExpand,
                                     Margin = new Thickness(20),
                                     HeightRequest = 100,
-                                    ImageUri = "https://www.mvvmcross.com/img/MvvmCross-logo.png",
+                                    ImageUri = "https://www.mvvmcross.com/assets/img/logo/MvvmCross-avatar.png",
                                 };
 
             switch (Device.RuntimePlatform)
