@@ -1,5 +1,4 @@
-﻿
-NativeToXF
+﻿NativeToXF
 ==========
 
 NativeToXF is a TestProject within the MvvmCross framework that shows how to build an app that uses both Native views and Xamarin Forms Content Pages.
@@ -18,5 +17,5 @@ The ViewModels and ContentPages are in
 
 ### Acknowledgements
 
-* Thanks to [Michael Ridland](http://http://www.michaelridland.com/) for his initial work in this area
+* Thanks to [Michael Ridland](http://www.michaelridland.com/) for his initial work in this area
 
